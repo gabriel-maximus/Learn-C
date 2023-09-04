@@ -58,22 +58,29 @@ bool hash_table_insert(person *p){
 
 person *hash_table_lookup ( char *name){
     int index = hash(name);
-    if (hash_table[index] != NULL && strncmp(hash_table[index]->name, name, 2)==0){
-        return hash_table[index];
-    }else{
-        return NULL;
+    for(int i=0;i<TABLE_SIZE;i++){
+        int try = (index+i) % TABLE_SIZE;
+        if (hash_table[try] != NULL && strncmp(hash_table[try]->name, name, 2)==0){
+        return hash_table[try];
     }
+    
+    }
+    return NULL;
 }
 
 person *hash_table_delete(char *name){
     int index = hash(name);
-    if (hash_table[index] != NULL && strncmp(hash_table[index]->name, name, 2)==0){
-        person *tmp = hash_table[index];
-        hash_table[index] = NULL;
+    for(int i=0;i<TABLE_SIZE;i++){
+        int try = (index+i) % TABLE_SIZE;
+        if (hash_table[try] != NULL && strncmp(hash_table[try]->name, name, 2)==0){
+        
+        person* tmp = hash_table[try];
+        hash_table[try] = NULL;
         return tmp;
-    }else{
-        return NULL;
     }
+    
+    }
+    return NULL;
 }
 
 int main(){
